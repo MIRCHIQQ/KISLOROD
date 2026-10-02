@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Кислород — фитнес-клуб</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --air:#0A0A0A; --surface:#141414; --ink:#F2EEE6; --muted:#A39E94; --line:#2A2926;
+  --deep:#050505; --deep-ink:#F2EEE6; --deep-muted:#A39E94; --teal:#C9A46A; --mint:#2B2823;
+  --accent:#C9A46A; --on-accent:#0A0A0A; --err:#E5735F;
+  --f-display:"Unbounded","Arial Black",Impact,sans-serif;
+  --f-body:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  color-scheme:dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--air);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:var(--f-display);font-weight:500;line-height:1.15;margin:0;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+
+/* buttons */
+.btn{letter-spacing:.01em;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px solid transparent;border-radius:999px;padding:11px 22px;font-weight:600;text-decoration:none;background:var(--accent);color:var(--on-accent);transition:transform .15s,filter .15s}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:inherit;border-color:rgba(242,238,230,.35)}
+.btn.ghost:hover{border-color:var(--teal);color:var(--teal)}
+.btn.small{padding:8px 18px;font-size:15px}
+
+/* header */
+.top{background:#050505;border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:24px;min-height:72px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-display);font-weight:700;font-size:22px;margin-right:auto}
+.logo svg{width:34px;height:34px}
+.info{display:flex;align-items:center;gap:8px;text-decoration:none;font-size:15px;color:var(--muted)}
+.info svg{width:18px;height:18px;flex:none;color:var(--teal)}
+.info.phone{color:var(--ink);font-weight:600}
+@media (max-width:760px){
+  .top .wrap{gap:10px 16px}
+  .logo{order:1}
+  .top .btn{order:2}
+  .info{order:3;font-size:14px}
+}
+.tabs{backdrop-filter:blur(10px);position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--air);border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs .wrap::-webkit-scrollbar{display:none}
+.tabs a{flex:none;padding:14px 16px;text-decoration:none;font-weight:500;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1px}
+.tabs a:hover{color:var(--ink)}
+.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+
+/* sections */
+.page[hidden]{display:none}
+.sec{padding:64px 0}
+.sec h2{font-size:clamp(26px,4.2vw,40px);margin-bottom:14px}
+.lead{max-width:62ch;color:var(--muted);font-size:18px}
+.head{margin-bottom:36px}
+
+/* hero */
+.hero{background:radial-gradient(800px 520px at 82% 45%,rgba(201,164,106,.16),transparent 65%),#050505;color:var(--deep-ink);overflow:hidden;border-bottom:1px solid var(--line)}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:32px;align-items:center;padding-top:56px;padding-bottom:56px}
+.hero h1{font-size:clamp(32px,5.6vw,60px);font-weight:500;line-height:1.05;margin-bottom:22px}
+.hero p{color:var(--deep-muted);font-size:18px;max-width:46ch;margin-bottom:30px}
+.hero .actions{display:flex;gap:12px;flex-wrap:wrap}
+.breath{position:relative;width:min(340px,80vw);aspect-ratio:1;margin:0 auto;display:grid;place-items:center}
+.breath i{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--teal);opacity:.5;animation:breathe 8s ease-in-out infinite}
+.breath i:nth-child(1){background:rgba(201,164,106,.06)}
+.breath i:nth-child(2){inset:14%;animation-delay:.35s;opacity:.4}
+.breath i:nth-child(3){inset:28%;animation-delay:.7s;opacity:.9;border-color:var(--teal)}
+.breath b{font-family:var(--f-display);font-size:clamp(40px,7vw,64px);position:relative;line-height:1}
+.breath b sub{font-size:.5em}
+.breath span{position:absolute;bottom:-6px;left:0;right:0;text-align:center;color:var(--deep-muted);font-size:15px;height:24px}
+.breath span em{position:absolute;inset:0;font-style:normal;animation:label 8s infinite}
+.breath span em+em{animation-delay:4s}
+@keyframes breathe{0%,100%{transform:scale(.7)}50%{transform:scale(1)}}
+@keyframes label{0%,45%{opacity:1}50%,95%{opacity:0}100%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.breath i,.breath span em{animation:none}.breath span em+em{display:none}html{scroll-behavior:auto}}
+@media (max-width:820px){.hero .wrap{grid-template-columns:1fr;padding-top:40px}.breath{order:-1;width:min(240px,60vw);margin-bottom:24px}}
+
+/* home blocks */
+.zones{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.chip{display:inline-block;padding:9px 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);text-decoration:none;font-weight:500}
+.chip:hover{border-color:var(--teal)}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.three h3{font-size:19px;margin-bottom:10px}
+.three p{color:var(--muted)}
+@media (max-width:820px){.three{grid-template-columns:1fr;gap:28px}}
+.next{display:grid;gap:0;border-top:1px solid var(--line)}
+.next .row{display:grid;grid-template-columns:90px 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.time{font-family:var(--f-display);font-weight:600;font-size:20px}
+.row small{display:block;color:var(--muted)}
+
+/* classes */
+.prog{display:grid;grid-template-columns:260px 1fr auto;gap:12px 32px;align-items:start;padding:28px 0;border-top:1px solid var(--line)}
+.prog:last-child{border-bottom:1px solid var(--line)}
+.prog h3{font-size:22px}
+.prog .fmt{color:var(--teal);font-weight:600;margin-top:6px;font-size:15px}
+.prog p{color:var(--muted);max-width:60ch}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding:0;list-style:none}
+.tags li{font-size:14px;padding:3px 12px;border-radius:999px;background:var(--mint);color:var(--ink)}
+@media (max-width:820px){.prog{grid-template-columns:1fr}}
+.personal{background:linear-gradient(135deg,#121212,#080808);border:1px solid var(--line);color:var(--deep-ink);border-radius:28px;padding:44px;display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.personal p{color:var(--deep-muted)}
+.personal h2{margin-bottom:14px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:18px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+.steps li::before{content:counter(s);width:44px;height:44px;border-radius:50%;border:1.5px solid var(--teal);color:var(--teal);display:grid;place-items:center;font-family:var(--f-display);font-weight:600}
+.steps b{display:block;color:#fff}
+.steps span{color:var(--deep-muted);font-size:15px}
+@media (max-width:820px){.personal{grid-template-columns:1fr;padding:28px 22px}}
+
+/* about */
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:0 48px;margin:32px 0 0}
+.facts div{padding:16px 0;border-top:1px solid var(--line)}
+.facts dt{font-weight:600}
+.facts dd{margin:2px 0 0;color:var(--muted)}
+@media (max-width:700px){.facts{grid-template-columns:1fr}}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.twocol p+p{margin-top:16px}
+.twocol p{color:var(--muted)}
+@media (max-width:820px){.twocol{grid-template-columns:1fr;gap:20px}}
+
+/* trainers */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.trainer{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;display:grid;grid-template-columns:72px 1fr;gap:18px}
+.ava{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:500;font-size:22px;color:var(--teal);background:#1A1814;border:1.5px solid var(--teal)}
+.trainer h3{font-size:18px;margin-bottom:2px}
+.trainer .role{color:var(--teal);font-weight:600;font-size:15px}
+.trainer p{color:var(--muted);font-size:15px;margin-top:8px}
+
+/* schedule */
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:20px;scrollbar-width:none}
+.days button{flex:none;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 20px;font-weight:500}
+.days button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.sched .row{display:grid;grid-template-columns:100px 1.4fr 1fr 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.sched{border-top:1px solid var(--line)}
+.sched .muted{color:var(--muted);font-size:15px}
+@media (max-width:760px){.sched .row{grid-template-columns:80px 1fr auto}.sched .row .zone,.sched .row .who{grid-column:2/3;margin-top:-10px}.sched .row .btn{grid-column:3;grid-row:1/3}}
+
+/* contacts */
+.cgrid{display:grid;grid-template-columns:1fr 1.1fr;gap:40px}
+.clist{display:grid;gap:0;margin:0}
+.clist div{padding:16px 0;border-top:1px solid var(--line)}
+.clist dt{color:var(--muted);font-size:14px}
+.clist dd{margin:2px 0 0;font-weight:600;font-size:18px}
+.map{border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#101010;min-height:320px}
+.map svg{display:block;width:100%;height:100%}
+@media (max-width:820px){.cgrid{grid-template-columns:1fr}}
+
+/* pricing */
+.pricing{background:var(--surface);border-top:1px solid var(--line)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:16px}
+.plan:hover{border-color:var(--teal)}
+.plan{border:1.5px solid var(--line);border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;background:var(--air)}
+.plan h3{font-size:16px;line-height:1.3;min-height:3.9em}
+.plan .price{font-family:var(--f-display);font-weight:700;font-size:30px;margin:14px 0 2px}
+.plan .unit{color:var(--muted);font-size:14px}
+.plan ul{list-style:none;padding:0;margin:18px 0 22px;display:grid;gap:8px;font-size:15px;color:var(--muted);flex:1}
+.plan li{padding-left:22px;position:relative}
+.plan li::before{content:"";position:absolute;left:2px;top:.55em;width:10px;height:6px;border-left:2px solid var(--teal);border-bottom:2px solid var(--teal);transform:rotate(-45deg) translateY(-50%)}
+
+/* footer */
+footer{background:var(--deep);color:var(--deep-muted);padding:32px 0;font-size:15px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px 32px;flex-wrap:wrap}
+footer a{color:var(--deep-ink)}
+
+/* modal */
+dialog{border:0;border-radius:24px;padding:0;width:min(480px,calc(100vw - 24px));background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.7);max-height:calc(100dvh - 24px)}
+dialog::backdrop{background:rgba(0,0,0,.75);backdrop-filter:blur(3px)}
+dialog[open]{animation:pop .22s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){dialog[open]{animation:none}}
+.m{padding:28px 26px 26px;position:relative}
+.m h2{font-size:22px;margin-bottom:6px;padding-right:36px}
+.m .sub{color:var(--muted);font-size:15px;margin-bottom:18px}
+.x{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:0;background:var(--air);color:var(--ink);font-size:22px;line-height:1}
+.f{display:grid;gap:6px;margin-bottom:14px}
+.f label{font-weight:600;font-size:14px}
+.f input,.f select,.f textarea{width:100%;font:inherit;color:inherit;background:var(--air);border:1.5px solid var(--line);border-radius:12px;padding:11px 14px}
+.f textarea{resize:vertical;min-height:70px}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 30%,transparent)}
+.f.bad input{border-color:var(--err)}
+.err{color:var(--err);font-size:13px;min-height:0}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);margin:4px 0 18px}
+.agree input{margin-top:3px;width:18px;height:18px;accent-color:var(--accent)}
+.m .btn{width:100%}
+.ok{text-align:center;padding:12px 0 4px}
+.ok svg{width:64px;height:64px;color:var(--teal);margin-bottom:12px}
+.ok p{color:var(--muted);margin:8px 0 20px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#home" aria-label="Кислород — на главную">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="20" cy="20" r="6" fill="var(--accent)"/></svg>
+      Кислород
+    </a>
+    <a class="info" href="#contacts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      ул. Есенина, 9
+    </a>
+    <a class="info phone" href="tel:520999">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+      520-999
+    </a>
+    <button class="btn" type="button" data-book>Записаться</button>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Разделы сайта">
+  <div class="wrap">
+    <a href="#home" data-tab="home">Главная</a>
+    <a href="#classes" data-tab="classes">Занятия</a>
+    <a href="#about" data-tab="about">О нас</a>
+    <a href="#trainers" data-tab="trainers">Тренеры</a>
+    <a href="#schedule" data-tab="schedule">Расписание</a>
+    <a href="#contacts" data-tab="contacts">Контакты</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ГЛАВНАЯ -->
+<div class="page" data-page="home" data-title="Кислород — фитнес-клуб">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Дышите глубже. Тренируйтесь сильнее.</h1>
+        <p>Фитнес-клуб «Кислород»: шесть тренировочных зон, сильная команда тренеров и свежий воздух в каждом зале.</p>
+        <div class="actions">
+          <button class="btn" type="button" data-book="Пробное занятие">Записаться на пробное</button>
+          <a class="btn ghost" href="#classes">Смотреть занятия</a>
+        </div>
+      </div>
+      <div class="breath" role="img" aria-label="Анимация дыхания: вдох и выдох">
+        <i></i><i></i><i></i>
+        <b>O<sub>2</sub></b>
+        <span><em>вдох</em><em>выдох</em></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="head">
+        <h2>Шесть зон и персональный тренинг</h2>
+        <p class="lead">Выберите формат под свою цель: набрать форму, похудеть, подготовиться к соревнованиям или просто двигаться в удовольствие.</p>
+      </div>
+      <div class="zones" id="zoneChips"></div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0">
+    <div class="wrap three">
+      <div><h3>Чистый воздух</h3><p>Приточная вентиляция работает во всех залах, поэтому даже в час пик в клубе легко дышать.</p></div>
+      <div><h3>Тренеры рядом</h3><p>Покажем технику, подберём вес и нагрузку. Первую тренировку проведём вместе.</p></div>
+      <div><h3>Свободный график</h3><p>Открыты с раннего утра до позднего вечера, групповые занятия идут каждый день.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0">
+    <div class="wrap">
+      <div class="head">
+        <h2>Ближайшие занятия сегодня</h2>
+      </div>
+      <div class="next" id="nextList"></div>
+      <p style="margin-top:20px"><a class="btn ghost small" href="#schedule" style="color:var(--ink)">Всё расписание</a></p>
+    </div>
+  </section>
+</div>
+
+<!-- ЗАНЯТИЯ -->
+<div class="page" data-page="classes" data-title="Занятия — Кислород" hidden>
+  <section class="sec">
+    <div class="wrap">
+      <div class="head">
+        <h2>Занятия и зоны</h2>
+        <p class="lead">Шесть направлений. Тренироваться можно в любой зоне, а на групповые занятия и в студию сайкла лучше записываться заранее.</p>
+      </div>
+      <div id="progList"></div>
+    </div>
+  </section>
+  <section class="sec" style="padding-top:0">
+    <div class="wrap">
+      <div class="personal">
+        <div>
+          <h2>Персональный тренинг</h2>
+          <p>Тренировки один на один с тренером, который ведёт вас к вашей цели: снижение веса, набор мышц, восстановление после перерыва или подготовка к старту.</p>
+          <p style="margin:14px 0 26px">Программа строится под ваше здоровье, график и уровень подготовки. Можно тренироваться вдвоём (сплит) или в мини-группе из 3–5 человек.</p>
+          <button class="btn" type="button" data-book="Персональный тренинг">Записаться на консультацию</button>
+        </div>
+        <ol class="steps">
+          <li><div><b>Знакомство и замеры</b><span>Обсуждаем цель, опыт, ограничения по здоровью. Делаем замеры и тест на гибкость и силу.</span></div></li>
+          <li><div><b>Индивидуальный план</b><span>Тренер составляет программу на 8–12 недель с понятными ориентирами по прогрессу.</span></div></li>
+          <li><div><b>Тренировки и контроль</b><span>Занимаетесь в удобное время, раз в месяц повторяем замеры и корректируем план.</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- О НАС -->
+<div class="page" data-page="about" data-title="О нас — Кислород" hidden>
+  <section class="sec">
+    <div class="wrap">
+      <div class="head">
+        <h2>О клубе «Кислород»</h2>
+        <p class="lead">Мы сделали клуб, в котором хочется оставаться после тренировки. Много света, много воздуха, никакой толкотни.</p>
+      </div>
+      <div class="twocol">
+        <p>«Кислород» начинался с простой идеи: хорошая тренировка невозможна в душном зале. Поэтому мы заложили в проект мощную вентиляцию, высокие потолки и большие окна, а оборудование расставили так, чтобы между тренажёрами оставалось место.</p>
+        <p>В клубе занимаются люди с разной подготовкой: от тех, кто пришёл впервые, до спортсменов, которые готовятся к соревнованиям. Тренеры подскажут, с чего начать, и помогут не бросить после первого месяца.</p>
+      </div>
+      <dl class="facts">
+        <div><dt>1 200 м² тренировочного пространства</dt><dd>Шесть зон и отдельная студия сайкла.</dd></div>
+        <div><dt>Приточная вентиляция</dt><dd>Воздух в залах обновляется постоянно.</dd></div>
+        <div><dt>Раздевалки и душевые</dt><dd>Просторные шкафчики, фены, зона отдыха.</dd></div>
+        <div><dt>Сильная команда тренеров</dt><dd>Сертифицированные специалисты с опытом от 5 лет.</dd></div>
+      </dl>
+    </div>
+  </section>
+</div>
+
+<!-- ТРЕНЕРЫ -->
+<div class="page" data-page="trainers" data-title="Тренеры — Кислород" hidden>
+  <section class="sec">
+    <div class="wrap">
+      <div class="head">
+        <h2>Тренеры клуба</h2>
+        <p class="lead">Наши специалисты ведут групповые занятия и работают персонально. Запишитесь на пробную тренировку и выберите своего тренера.</p>
+      </div>
+      <div class="tgrid" id="trainerList"></div>
+    </div>
+  </section>
+</div>
+
+<!-- РАСПИСАНИЕ -->
+<div class="page" data-page="schedule" data-title="Расписание — Кислород" hidden>
+  <section class="sec">
+    <div class="wrap">
+      <div class="head">
+        <h2>Расписание групповых занятий</h2>
+        <p class="lead">Тренажёрный зал, кардиозона и силовая зона открыты в свободном режиме в часы работы клуба.</p>
+      </div>
+      <div class="days" id="dayTabs" role="group" aria-label="День недели"></div>
+      <div class="sched" id="schedList"></div>
+    </div>
+  </section>
+</div>
+
+<!-- КОНТАКТЫ -->
+<div class="page" data-page="contacts" data-title="Контакты — Кислород" hidden>
+  <section class="sec">
+    <div class="wrap">
+      <div class="head"><h2>Контакты</h2></div>
+      <div class="cgrid">
+        <div>
+          <dl class="clist">
+            <div><dt>Адрес</dt><dd>ул. Есенина, 9</dd></div>
+            <div><dt>Телефон</dt><dd><a href="tel:520999" style="text-decoration:none">520-999</a></dd></div>
+            <div><dt>Режим работы</dt><dd>Пн–Пт 07:00–22:00<br>Сб–Вс 08:00–21:00</dd></div>
+            <div><dt>Почта</dt><dd><a href="mailto:hello@kislorod-fit.ru" style="text-decoration:none">hello@kislorod-fit.ru</a></dd></div>
+          </dl>
+          <p style="margin-top:24px"><button class="btn" type="button" data-book>Записаться</button></p>
+        </div>
+        <div class="map" role="img" aria-label="Схема проезда к клубу «Кислород»">
+          <svg viewBox="0 0 600 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="600" height="420" fill="#101010"/>
+            <g fill="#1B1A18"><rect x="30" y="30" width="170" height="110" rx="10"/><rect x="230" y="30" width="140" height="110" rx="10"/><rect x="400" y="30" width="170" height="110" rx="10"/><rect x="30" y="180" width="170" height="90" rx="10"/><rect x="400" y="180" width="170" height="90" rx="10"/><rect x="30" y="310" width="170" height="80" rx="10"/><rect x="230" y="310" width="340" height="80" rx="10"/></g>
+            <g fill="#9ED1C9"><rect x="240" y="190" width="140" height="80" rx="40" opacity=".0"/></g>
+            <path d="M0 160 H600 M215 0 V420 M385 0 V420 M0 290 H600" stroke="#2C2A26" stroke-width="18" fill="none"/>
+            <path d="M0 160 H600" stroke="#C9A46A" stroke-width="3" stroke-dasharray="14 12" fill="none"/>
+            <g transform="translate(300 225)"><circle r="46" fill="#C9A46A" opacity=".2"/><circle r="26" fill="#C9A46A"/><circle r="9" fill="#0A0A0A"/></g>
+            <text x="300" y="285" text-anchor="middle" font-family="Onest,Arial,sans-serif" font-weight="600" font-size="18" fill="#F2EEE6">Кислород</text>
+            <text x="108" y="165" text-anchor="middle" font-family="Onest,Arial,sans-serif" font-size="13" fill="#8C877D">ул. Есенина</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<!-- АБОНЕМЕНТЫ -->
+<section class="pricing sec" id="pricing">
+  <div class="wrap">
+    <div class="head">
+      <h2>Абонементы и тренировки</h2>
+      <p class="lead">Выберите формат и оставьте заявку. Администратор перезвонит, ответит на вопросы и оформит покупку.</p>
+    </div>
+    <div class="pgrid" id="planList"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Фитнес-клуб «Кислород»</span>
+    <span>ул. Есенина, 9 · <a href="tel:520999">520-999</a></span>
+  </div>
+</footer>
+
+<!-- ОКНО ЗАПИСИ -->
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <div class="m">
+    <button class="x" type="button" id="dlgClose" aria-label="Закрыть">×</button>
+    <div id="formView">
+      <h2 id="dlgTitle">Запись в клуб</h2>
+      <p class="sub" id="dlgSub">Оставьте контакты, и мы перезвоним, чтобы подобрать время.</p>
+      <form id="bookForm" novalidate>
+        <div class="f" id="fName"><label for="name">Имя</label><input id="name" name="name" autocomplete="given-name" required><span class="err"></span></div>
+        <div class="f" id="fPhone"><label for="phone">Телефон</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required><span class="err"></span></div>
+        <div class="f"><label for="topic">Что вас интересует</label><select id="topic" name="topic"></select></div>
+        <div class="f"><label for="comment">Комментарий <span style="font-weight:400;color:var(--muted)">(необязательно)</span></label><textarea id="comment" name="comment"></textarea></div>
+        <label class="agree"><input type="checkbox" id="agree"> <span>Согласен на обработку персональных данных</span></label>
+        <div class="err" id="agreeErr" style="margin:-12px 0 12px"></div>
+        <button class="btn" type="submit" id="submitBtn">Записаться</button>
+      </form>
+    </div>
+    <div class="ok" id="okView" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>
+      <h2 id="okTitle" style="font-size:22px">Заявка отправлена</h2>
+      <p id="okText">Администратор позвонит вам в ближайшее время.</p>
+      <a class="btn" id="okMail" href="#" hidden style="margin-bottom:12px">Открыть письмо</a>
+      <button class="btn ghost" type="button" id="okClose" style="color:var(--ink)">Закрыть</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+/* ---------- данные ---------- */
+const PROGRAMS = [
+  {name:"Тренажёрный зал", fmt:"Свободный режим", text:"Просторный зал со свободными весами, скамьями, стойками и гантелями до 50 кг. Подходит для набора мышечной массы, рельефа и общей физической формы. Тренер зала подскажет технику и поможет составить базовую программу.", tags:["Свободные веса","Для любого уровня","Работа с тренером"]},
+  {name:"Кардиозона", fmt:"Свободный режим", text:"Беговые дорожки, эллипсы, велотренажёры и гребные тренажёры с индивидуальными экранами. Укрепляет сердце, повышает выносливость и помогает снижать вес. Можно заниматься самостоятельно или по готовому плану.", tags:["Выносливость","Снижение веса","Пульсовые зоны"]},
+  {name:"Силовые тренажёры", fmt:"Свободный режим", text:"Блочные и рычажные тренажёры на все группы мышц с понятными схемами упражнений. Безопасно для новичков и удобно тем, кто восстанавливается после перерыва или травмы.", tags:["Безопасно для новичков","Все группы мышц","Схемы упражнений"]},
+  {name:"Зона кроссфита", fmt:"Тренировки с тренером, 60 минут", text:"Штанги, гири, канаты, турники, плиобоксы и гребной эргометр. Комплексы меняются каждый день: вы работаете над силой, скоростью и выносливостью в бодрой атмосфере команды.", tags:["Группа до 12 человек","Масштабирование нагрузки","WOD"]},
+  {name:"Групповые программы", fmt:"По расписанию, 45–60 минут", text:"Функциональный тренинг, табата, пилатес, стретчинг, здоровая спина. Опытный тренер ведёт занятие и следит за техникой, а музыка и общая энергия помогают не сдаваться.", tags:["Группа до 15 человек","От новичка до продвинутого","Без записи на оборудование"]},
+  {name:"Студия сайкла", fmt:"По расписанию, 50 минут", text:"Тренировка на велотренажёрах под ритмичную музыку со светом и сценарием. За занятие сжигается много калорий, а ноги и корпус получают серьёзную нагрузку. Подойдёт любой уровень: сопротивление вы выбираете сами.", tags:["Группа до 20 человек","Кардио","Обувь выдаём"]}
+];
+
+const TRAINERS = [
+  {n:"Андрей Волков", r:"Тренажёрный зал, силовые тренажёры", p:"Мастер спорта по пауэрлифтингу. Поможет освоить базовые упражнения и набрать силу без травм. Опыт 9 лет.", c:"#12606B"},
+  {n:"Мария Лебедева", r:"Студия сайкла", p:"Ведёт сайкл-райды с яркими сценариями и мощной музыкой. Сертифицированный инструктор, опыт 6 лет.", c:"#D63B26"},
+  {n:"Игорь Назаров", r:"Зона кроссфита", p:"Тренер по кроссфиту, участник региональных соревнований. Учит технике и подбирает нагрузку под вас. Опыт 7 лет.", c:"#0B2B33"},
+  {n:"Екатерина Орлова", r:"Групповые программы", p:"Функциональный тренинг, пилатес и стретчинг. Много внимания уделяет здоровой спине и осанке. Опыт 8 лет.", c:"#2E8B8B"},
+  {n:"Денис Громов", r:"Персональный тренинг, сплит", p:"Работает с похудением и набором массы, ведёт подготовку к соревнованиям. Составляет программы под образ жизни клиента. Опыт 10 лет.", c:"#B2432F"},
+  {n:"Алина Соколова", r:"Кардио, мини-группы", p:"Нутрициолог и тренер. Ведёт мини-группы по 3–5 человек для тех, кто хочет заниматься в компании. Опыт 5 лет.", c:"#3F6F8F"}
+];
+
+const DAYS = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+const SCHEDULE = {
+  0:["07:30|Сайкл|Мария Лебедева|Студия сайкла","09:00|Функциональный тренинг|Екатерина Орлова|Групповой зал","12:00|Кроссфит: база|Игорь Назаров|Зона кроссфита","18:30|Сайкл|Мария Лебедева|Студия сайкла","19:30|Кроссфит WOD|Игорь Назаров|Зона кроссфита","20:00|Стретчинг|Екатерина Орлова|Групповой зал"],
+  1:["08:00|Пилатес|Екатерина Орлова|Групповой зал","10:00|Табата|Алина Соколова|Групповой зал","18:00|Здоровая спина|Екатерина Орлова|Групповой зал","19:00|Сайкл|Мария Лебедева|Студия сайкла","19:30|Кроссфит WOD|Игорь Назаров|Зона кроссфита"],
+  2:["07:30|Сайкл|Мария Лебедева|Студия сайкла","09:00|Функциональный тренинг|Екатерина Орлова|Групповой зал","12:00|Мини-группа|Алина Соколова|Кардиозона","18:30|Табата|Алина Соколова|Групповой зал","19:30|Кроссфит: техника|Игорь Назаров|Зона кроссфита"],
+  3:["08:00|Пилатес|Екатерина Орлова|Групповой зал","18:00|Сайкл|Мария Лебедева|Студия сайкла","19:00|Здоровая спина|Екатерина Орлова|Групповой зал","19:30|Кроссфит WOD|Игорь Назаров|Зона кроссфита","20:15|Стретчинг|Екатерина Орлова|Групповой зал"],
+  4:["07:30|Сайкл|Мария Лебедева|Студия сайкла","09:00|Табата|Алина Соколова|Групповой зал","12:00|Мини-группа|Алина Соколова|Кардиозона","18:00|Функциональный тренинг|Екатерина Орлова|Групповой зал","19:00|Сайкл|Мария Лебедева|Студия сайкла"],
+  5:["10:00|Сайкл|Мария Лебедева|Студия сайкла","11:30|Кроссфит WOD|Игорь Назаров|Зона кроссфита","13:00|Пилатес|Екатерина Орлова|Групповой зал","15:00|Стретчинг|Екатерина Орлова|Групповой зал"],
+  6:["10:00|Функциональный тренинг|Екатерина Орлова|Групповой зал","11:30|Сайкл|Мария Лебедева|Студия сайкла","13:00|Кроссфит: техника|Игорь Назаров|Зона кроссфита","16:00|Здоровая спина|Екатерина Орлова|Групповой зал"]
+};
+
+const PLANS = [
+  {t:"Безлимитный абонемент в тренажёрный зал", price:"3 900 ₽", unit:"в месяц", inc:["Тренажёрный зал, кардио- и силовая зоны","Вводная тренировка с тренером","Раздевалка и душ"]},
+  {t:"Безлимитный абонемент на групповые тренировки", price:"4 900 ₽", unit:"в месяц", inc:["Все групповые программы и сайкл","Запись на занятия через администратора","Доступ в тренажёрный зал"]},
+  {t:"Персональные тренировки", price:"2 500 ₽", unit:"за занятие, пакет из 10 — 22 000 ₽", inc:["Индивидуальный план и замеры","Тренер только для вас","Гибкое время занятий"]},
+  {t:"Сплит-тренировки", price:"1 700 ₽", unit:"с человека за занятие, пакет из 10 — 15 000 ₽", inc:["Тренируетесь вдвоём с партнёром","Программа под обоих","Доступная цена тренера"]},
+  {t:"Персональный тренинг в мини-группах", price:"1 200 ₽", unit:"за занятие, 8 занятий — 8 900 ₽", inc:["Группа от 3 до 5 человек","Внимание тренера каждому","Мотивация от команды"]}
+];
+
+/* ---------- утилиты ---------- */
+const $ = (s,r=document)=>r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const initials = n => n.split(" ").map(w=>w[0]).join("");
+const parse = s => { const [t,c,w,z]=s.split("|"); return {t,c,w,z}; };
+const todayIdx = () => (new Date().getDay()+6)%7;
+
+/* ---------- отрисовка ---------- */
+$("#zoneChips").innerHTML = PROGRAMS.map(p=>`<a class="chip" href="#classes">${esc(p.name)}</a>`).join("") + `<a class="chip" href="#classes">Персональный тренинг</a>`;
+
+$("#progList").innerHTML = PROGRAMS.map(p=>`
+  <article class="prog">
+    <div><h3>${esc(p.name)}</h3><div class="fmt">${esc(p.fmt)}</div></div>
+    <div><p>${esc(p.text)}</p><ul class="tags">${p.tags.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></div>
+    <button class="btn small" type="button" data-book="${esc(p.name)}">Записаться</button>
+  </article>`).join("");
+
+$("#trainerList").innerHTML = TRAINERS.map(t=>`
+  <article class="trainer">
+    <div class="ava" aria-hidden="true">${initials(t.n)}</div>
+    <div><h3>${esc(t.n)}</h3><div class="role">${esc(t.r)}</div><p>${esc(t.p)}</p></div>
+  </article>`).join("");
+
+$("#planList").innerHTML = PLANS.map((p,i)=>`
+  <article class="plan">
+    <h3>${esc(p.t)}</h3>
+    <div class="price">${esc(p.price)}</div>
+    <div class="unit">${esc(p.unit)}</div>
+    <ul>${p.inc.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+    <button class="btn" type="button" data-plan="${i}">Купить</button>
+  </article>`).join("");
+
+/* расписание */
+let curDay = todayIdx();
+function renderDays(){
+  $("#dayTabs").innerHTML = DAYS.map((d,i)=>`<button type="button" data-day="${i}" aria-pressed="${i===curDay}">${d}</button>`).join("");
+}
+function renderSchedule(){
+  $("#schedList").innerHTML = SCHEDULE[curDay].map(parse).map(e=>`
+    <div class="row">
+      <div class="time">${e.t}</div>
+      <div><b>${esc(e.c)}</b></div>
+      <div class="muted who">${esc(e.w)}</div>
+      <div class="muted zone">${esc(e.z)}</div>
+      <button class="btn small" type="button" data-book="${esc(e.c)}">Записаться</button>
+    </div>`).join("");
+}
+$("#dayTabs").addEventListener("click",e=>{
+  const b = e.target.closest("[data-day]"); if(!b) return;
+  curDay = +b.dataset.day; renderDays(); renderSchedule();
+});
+renderDays(); renderSchedule();
+
+/* ближайшие сегодня */
+(function(){
+  const now = new Date(); const mins = now.getHours()*60+now.getMinutes();
+  let list = SCHEDULE[todayIdx()].map(parse).filter(e=>{const [h,m]=e.t.split(":");return +h*60+ +m>=mins});
+  let title = "";
+  if(!list.length){ list = SCHEDULE[(todayIdx()+1)%7].map(parse); title = "Сегодня занятий больше нет, вот что будет завтра"; }
+  list = list.slice(0,3);
+  $("#nextList").innerHTML = (title?`<p class="lead" style="padding:0 0 14px">${title}</p>`:"") + list.map(e=>`
+    <div class="row"><div class="time">${e.t}</div><div><b>${esc(e.c)}</b><small>${esc(e.w)}, ${esc(e.z)}</small></div><button class="btn small" type="button" data-book="${esc(e.c)}">Записаться</button></div>`).join("");
+})();
+
+/* ---------- вкладки ---------- */
+const PAGES = ["home","classes","about","trainers","schedule","contacts"];
+let current = null;
+function route(){
+  let h = location.hash.slice(1);
+  if(h==="pricing"){
+    if(!current) show("home");
+    $("#pricing").scrollIntoView(); return;
+  }
+  show(PAGES.includes(h)?h:"home");
+  window.scrollTo({top:0,behavior:"auto"});
+}
+function show(p){
+  current = p;
+  document.querySelectorAll(".page").forEach(el=>{ el.hidden = el.dataset.page!==p; });
+  document.querySelectorAll(".tabs a").forEach(a=>{
+    if(a.dataset.tab===p) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+  });
+  document.title = $(`.page[data-page="${p}"]`).dataset.title;
+  const act = $('.tabs a[aria-current="page"]'); if(act) act.scrollIntoView({block:"nearest",inline:"center"});
+}
+window.addEventListener("hashchange",route);
+route();
+
+/* ---------- окно записи ---------- */
+const dlg = $("#dlg"), form = $("#bookForm"), topic = $("#topic");
+const TOPICS = ["Пробное занятие", ...PROGRAMS.map(p=>p.name), "Персональный тренинг"];
+let planMode = null;
+
+function fillTopics(selected){
+  const opts = [...TOPICS];
+  if(selected && !opts.includes(selected)) opts.push(selected);
+  topic.innerHTML = opts.map(o=>`<option${o===selected?" selected":""}>${esc(o)}</option>`).join("");
+}
+function openBooking(sel, plan){
+  planMode = plan ?? null;
+  form.reset(); clearErrors();
+  $("#formView").hidden = false; $("#okView").hidden = true;
+  if(plan!=null){
+    const p = PLANS[plan];
+    $("#dlgTitle").textContent = "Покупка абонемента";
+    $("#dlgSub").textContent = `${p.t}: ${p.price} (${p.unit}). Оставьте контакты, и администратор оформит покупку.`;
+    fillTopics(p.t);
+    $("#submitBtn").textContent = "Купить";
+  } else {
+    $("#dlgTitle").textContent = "Запись в клуб";
+    $("#dlgSub").textContent = "Оставьте контакты, и мы перезвоним, чтобы подобрать время.";
+    fillTopics(sel || "Пробное занятие");
+    $("#submitBtn").textContent = "Записаться";
+  }
+  dlg.showModal();
+  $("#name").focus();
+}
+document.addEventListener("click",e=>{
+  const bk = e.target.closest("[data-book]");
+  if(bk){ openBooking(bk.dataset.book||""); return; }
+  const pl = e.target.closest("[data-plan]");
+  if(pl){ openBooking("", +pl.dataset.plan); }
+});
+$("#dlgClose").onclick = ()=>dlg.close();
+$("#okClose").onclick = ()=>dlg.close();
+dlg.addEventListener("click",e=>{ if(e.target===dlg) dlg.close(); });
+
+/* маска телефона */
+const phone = $("#phone");
+phone.addEventListener("input",()=>{
+  let d = phone.value.replace(/\D/g,"");
+  if(d[0]==="8") d = "7"+d.slice(1);
+  if(d && d[0]!=="7") d = "7"+d;
+  d = d.slice(0,11);
+  let out = "";
+  if(d.length){
+    out = "+7";
+    if(d.length>1) out += " ("+d.slice(1,4);
+    if(d.length>=5) out += ") "+d.slice(4,7);
+    if(d.length>=8) out += "-"+d.slice(7,9);
+    if(d.length>=10) out += "-"+d.slice(9,11);
+  }
+  phone.value = out;
+});
+
+function setErr(id,msg){
+  const f = $(id); f.classList.toggle("bad",!!msg); f.querySelector(".err").textContent = msg||"";
+}
+function clearErrors(){ setErr("#fName",""); setErr("#fPhone",""); $("#agreeErr").textContent=""; }
+
+const MAIL = "gricevanton8@gmail.com";
+form.addEventListener("submit",async e=>{
+  e.preventDefault(); clearErrors();
+  let ok = true;
+  if($("#name").value.trim().length<2){ setErr("#fName","Введите имя"); ok=false; }
+  if(phone.value.replace(/\D/g,"").length!==11){ setErr("#fPhone","Введите номер полностью, 11 цифр"); ok=false; }
+  if(!$("#agree").checked){ $("#agreeErr").textContent="Подтвердите согласие на обработку данных"; ok=false; }
+  if(!ok){ const bad = form.querySelector(".bad input"); if(bad) bad.focus(); return; }
+  const name = $("#name").value.trim();
+  const comment = $("#comment").value.trim() || "—";
+  const subject = "Заявка с сайта «Кислород»: " + topic.value;
+  const data = {"Имя":name, "Телефон":phone.value, "Что интересует":topic.value, "Комментарий":comment, _subject:subject, _template:"table", _captcha:"false"};
+  const btn = $("#submitBtn"), label = btn.textContent;
+  btn.disabled = true; btn.textContent = "Отправляем…";
+  let sent = false;
+  try{
+    const ctrl = new AbortController(); const tm = setTimeout(()=>ctrl.abort(),10000);
+    const r = await fetch("https://formsubmit.co/ajax/"+MAIL,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(data),signal:ctrl.signal});
+    clearTimeout(tm);
+    const j = await r.json();
+    sent = r.ok && String(j.success)==="true";
+  }catch(err){ sent = false; }
+  btn.disabled = false; btn.textContent = label;
+  if(sent){
+    $("#okTitle").textContent = "Заявка отправлена";
+    $("#okText").textContent = planMode!=null
+      ? `${name}, мы получили заявку на покупку. Администратор позвонит вам в течение 15 минут и оформит абонемент.`
+      : `${name}, мы получили заявку. Администратор позвонит вам в течение 15 минут и подберёт время.`;
+    $("#okMail").hidden = true;
+  } else {
+    const body = `Имя: ${name}\nТелефон: ${phone.value}\nЧто интересует: ${topic.value}\nКомментарий: ${comment}`;
+    $("#okMail").href = `mailto:${MAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    $("#okMail").hidden = false;
+    $("#okTitle").textContent = "Осталось отправить письмо";
+    $("#okText").textContent = "Заявку не удалось отправить автоматически. Нажмите кнопку: откроется письмо с вашими данными, останется отправить его.";
+  }
+  $("#formView").hidden = true; $("#okView").hidden = false;
+  $("#okClose").focus();
+});
+</script>
+</body>
+</html>
